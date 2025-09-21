@@ -32,18 +32,42 @@ def get_dataset(subset):
 # normalization layer
 normalization_layer = tf.keras.layers.Rescaling(1. / 255)
 
-def preprocess(dataset):
+# augmentation layers (4)
+# flip, rotate, zoom, contrast  
+data_augmentation = tf.keras.Sequential([
+    tf.keras.layers.RandomFlip("horizontal"),
+    tf.keras.layers.RandomRotation(0.1),
+    tf.keras.layers.RandomZoom(0.1),
+    tf.keras.layers.RandomContrast(0.1)
+])
+
+def preprocess(dataset, augment = False):
     #TODO: DATA AUGMENTATION (only training set )
     #TODO: Caching / Prefetching
 
     """
-    Preprocessing (normalization, augmentation, etc.)
+    Preprocessing tf.data.Dataset
+    - Normalization of pixel values
+    - Data augmentation on training set
     """
-    # normalize
-    dataset = dataset.map(lambda x, y: (normalization_layer(x), y))
-    return dataset
 
-train_ds = preprocess(get_dataset("train"))
+    def normalize_and_augment(x, y):
+        # normalize
+        x = normalization_layer(x)
+
+        #augment (if training set)
+        if augment:
+            x = data_augmentation(x)
+        return x, y
+    
+    # apply normalization + augmentation
+    dataset = dataset.map(normalize_and_augment)
+    
+    # Pipeline performance optimization
+    dataset = dataset.cache()
+    dataset = dataset.prefetch(tf.data.AUTOTUNE)
+
+train_ds = preprocess(get_dataset("train", augment = True))
 test_ds = preprocess(get_dataset("test"))
 val_ds = preprocess(get_dataset("val"))
 
