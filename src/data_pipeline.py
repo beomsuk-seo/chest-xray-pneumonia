@@ -4,7 +4,9 @@ import os
 IMG_SIZE = (224, 224) #standard size, e.g. ResNet50
 BATCH_SIZE = 32
 SEED = 123
-DATA_DIR = os.path.join("../data", "raw")
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(SCRIPT_DIR, "..", "data", "raw", "chest_xray")
 
 def get_dataset(subset):
     """
@@ -31,7 +33,7 @@ def get_dataset(subset):
 normalization_layer = tf.keras.layers.Rescaling(1. / 255)
 
 def preprocess(dataset):
-    #TODO: DATA AUGMENTATION
+    #TODO: DATA AUGMENTATION (only training set )
     #TODO: Caching / Prefetching
 
     """
