@@ -1,5 +1,9 @@
 # Deep Learning for Pneumonia Diagnosis from Chest X-Rays
 
+### Dataset Organization
+- Original dataset contains all pneumonia imaging in a single folder.
+- `src/split_pneumonia.py` splits them into `BACTERIAL/` and `VIRAL/` directores for three-class classification.
+
 Initial Data Heirarchy
 ```
 data/raw/
