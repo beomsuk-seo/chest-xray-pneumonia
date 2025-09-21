@@ -1,0 +1,10 @@
+#ignore data
+data/raw/*
+data/processed/*
+data/external/*
+
+#keep folder structure
+!data/.gitkeep
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/external/.gitkeep
