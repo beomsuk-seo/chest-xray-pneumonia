@@ -2,6 +2,5 @@
 data/*
 #ignore cache
 src/__pycache__/*
-#ignore best_model.h5
-best_model.h5
-best_model.h5
+#ignore model (.h5) files
+*.h5
