@@ -39,7 +39,7 @@ model.compile(
         "accuracy",
         tf.keras.metrics.Precision(name = 'precision'),
         tf.keras.metrics.Recall(name = 'recall'),
-    ] # tracking metrics 
+    ] # tracking metrics (optional: add F1 Score)
 )
 
 # callbacks
@@ -53,6 +53,8 @@ callbacks = [
         save_best_only = True
     ),
     tf.keras.callbacks.ReduceLROnPlateau(
-        
+        factor = 0.2,
+        patience = 2
     )
 ]
+
