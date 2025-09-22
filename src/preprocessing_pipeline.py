@@ -42,9 +42,6 @@ data_augmentation = tf.keras.Sequential([
 ])
 
 def preprocess(dataset, augment = False):
-    #TODO: DATA AUGMENTATION (only training set )
-    #TODO: Caching / Prefetching
-
     """
     Preprocessing tf.data.Dataset
     - Normalization of pixel values
@@ -67,6 +64,14 @@ def preprocess(dataset, augment = False):
     dataset = dataset.cache()
     dataset = dataset.prefetch(tf.data.AUTOTUNE)
 
-train_ds = preprocess(get_dataset("train"), augment = True)
-test_ds = preprocess(get_dataset("test"))
-val_ds = preprocess(get_dataset("val"))
+    return dataset
+
+def load_datasets():
+    """
+    Returns preprocessed datasets (train, test, val).
+    Note: data augmentation only performed on training set.
+    """
+    train_ds = preprocess(get_dataset("train"), augment = True)
+    test_ds = preprocess(get_dataset("test"))
+    val_ds = preprocess(get_dataset("val"))
+    return train_ds, test_ds, val_ds
