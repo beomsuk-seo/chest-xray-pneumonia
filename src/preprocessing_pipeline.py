@@ -61,13 +61,12 @@ def preprocess(dataset, augment = False):
         return x, y
     
     # apply normalization + augmentation
-    dataset = dataset.map(normalize_and_augment)
+    dataset = dataset.map(normalize_and_augment, num_parallel_calls = tf.data.AUTOTUNE)
     
     # Pipeline performance optimization
     dataset = dataset.cache()
     dataset = dataset.prefetch(tf.data.AUTOTUNE)
 
-train_ds = preprocess(get_dataset("train", augment = True))
+train_ds = preprocess(get_dataset("train"), augment = True)
 test_ds = preprocess(get_dataset("test"))
 val_ds = preprocess(get_dataset("val"))
-
