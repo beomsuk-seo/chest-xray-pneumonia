@@ -68,3 +68,7 @@ history = model.fit(
 
 test_loss, test_acc = model.evaluate(test_ds)
 print(f"test_loss: {test_loss:.4f}")
+
+# 10 epochs
+# test_loss: 1.0639
+# accuracy: 0.4877

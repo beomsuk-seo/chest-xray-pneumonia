@@ -7,7 +7,7 @@ import tensorflow as tf
 import os
 
 # num of base model layers to unfreeze 
-UNFREEZE_LAYERS = 20
+UNFREEZE_LAYERS = 10
 
 EPOCHS = 10
 
@@ -24,7 +24,7 @@ print("Model loaded successfully.")
 # for i, layer in enumerate(model.layers):
 #     print(i, layer.name, type(layer))
 
-# unfreeze top 20 layers
+# unfreeze layers
 for layer in model.layers[-UNFREEZE_LAYERS:]:
     layer.trainable = True
 
@@ -52,3 +52,20 @@ history = model.fit(
     epochs = EPOCHS,
     callbacks = callbacks
 )
+test_loss, test_acc = model.evaluate(test_ds)
+print(f"test_loss: {test_loss:.4f}")
+
+# Test 1
+# Unfreeze 20 layers.
+# ran for 4 epochs
+#   callbacks working
+# accuracy: 0.7565 
+# probably overfitting -> validation loss spike during epoch 2
+
+# Test 2
+# Unfreeze 10 layers instead of 20.
+# ran for ? epochs
+# accuracy: 0
+# test loss: 
+
+# Test 3
