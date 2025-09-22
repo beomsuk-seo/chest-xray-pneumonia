@@ -12,12 +12,47 @@ LEARNING_RATE = 1e-4
 # load preprocessed datasets (see preprocesing_pipeline.py)
 train_ds, test_ds, val_ds = load_datasets()
 
-#model: ResNet50
+#base model: ResNet50
 base_model = tf.keras.applications.ResNet50(
     input_shape = IMG_SIZE + (3,), # (224, 224, 3)
     include_top = False, # exclude original resnet classifier
     weights = 'imagenet' # transfer learning
 )
-
 #freeze base model initially
 base_model.trainable = False
+
+#build classifier head
+global_avg = tf.keras.layers.GlobalAveragePooling2D()(base_model.output)
+# prevent overfitting, drop 30% at random
+dropout = tf.keras.layers.Dropout(0.3)(global_avg)
+
+output = tf.keras.layers.Dense(NUM_CLASSES, activation='softmax')(dropout)
+
+#connect models
+model = tf.keras.Model(inputs = base_model.input, outputs = output)
+#print(model.summary())
+
+model.compile(
+    optimizer=tf.keras.optimizers.Adam(learning_rate = LEARNING_RATE),
+    loss = "sparse_categorical_crossentropy",
+    metrics=[
+        "accuracy",
+        tf.keras.metrics.Precision(name = 'precision'),
+        tf.keras.metrics.Recall(name = 'recall'),
+    ] # tracking metrics 
+)
+
+# callbacks
+callbacks = [
+    tf.keras.callbacks.EarlyStopping(
+        patience = 3,
+        restore_best_weights = True
+    ),
+    tf.keras.callbacks.ModelCheckpoint(
+        "best_model.h5",
+        save_best_only = True
+    ),
+    tf.keras.callbacks.ReduceLROnPlateau(
+        
+    )
+]
