@@ -21,7 +21,7 @@ def get_dataset(subset):
     dataset = tf.keras.utils.image_dataset_from_directory(
         os.path.join(DATA_DIR, subset),
         labels = "inferred", # based on folder structure
-        label_mode = "categorical",
+        label_mode = "int",
         image_size = IMG_SIZE, #resizing image (preprocessing)
         batch_size = BATCH_SIZE,
         shuffle = True if subset == "train" else False, #only shuffling training set

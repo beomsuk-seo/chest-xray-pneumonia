@@ -36,9 +36,9 @@ model.compile(
     optimizer=tf.keras.optimizers.Adam(learning_rate = LEARNING_RATE),
     loss = "sparse_categorical_crossentropy",
     metrics=[
-        "accuracy",
-        tf.keras.metrics.Precision(name = 'precision'),
-        tf.keras.metrics.Recall(name = 'recall'),
+        "accuracy"#, extra metrics causing errors, will implement with classification_report
+        #tf.keras.metrics.Precision(name = 'precision'),
+        #tf.keras.metrics.Recall(name = 'recall'),
     ] # tracking metrics (optional: add F1 Score)
 )
 
@@ -58,3 +58,16 @@ callbacks = [
     )
 ]
 
+# train model
+history = model.fit(
+    train_ds, #training data; tf.data.Dataset
+    validation_data = val_ds,
+    epochs = EPOCHS,
+    callbacks = callbacks
+)
+
+test_loss, test_acc, test_precision, test_recall = model.evaluate(test_ds)
+print(f"test_loss: {test_loss:.4f}")
+print(f"Test Accuracy: {test_acc:.4f}")
+print(f"Test Precision: {test_precision:.4f}")
+print(f"Test Recall: {test_recall:.4f}")
