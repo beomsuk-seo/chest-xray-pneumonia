@@ -66,8 +66,5 @@ history = model.fit(
     callbacks = callbacks
 )
 
-test_loss, test_acc, test_precision, test_recall = model.evaluate(test_ds)
+test_loss, test_acc = model.evaluate(test_ds)
 print(f"test_loss: {test_loss:.4f}")
-print(f"Test Accuracy: {test_acc:.4f}")
-print(f"Test Precision: {test_precision:.4f}")
-print(f"Test Recall: {test_recall:.4f}")
