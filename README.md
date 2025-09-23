@@ -13,12 +13,8 @@ This project implements a convolutional neural network to automatically diagnose
 - **Progressive Fine-tuning**: Two-stage training approach for optimal performance
 - **Data Augmentation**: Robust preprocessing pipeline with medical image considerations
 - **Performance Monitoring**: Comprehensive callbacks for training optimization
-- **Progressive Unfreezing**: Unfreezing last 20 layers of ResNet50 for fine-tuning
+- **Progressive Unfreezing**: Unfreezing layers of ResNet50 for fine-tuning
 
-## 📁 Project Structure
-WIP
-## 🚀 Getting Started
-WIP
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.

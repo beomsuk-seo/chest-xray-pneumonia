@@ -7,7 +7,7 @@ import os
 
 # num of base model layers to unfreeze 
 UNFREEZE_LAYERS = 30
-LEARNING_RATE = 5e-6
+LEARNING_RATE = 1e-5
 EPOCHS = 15
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))

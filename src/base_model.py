@@ -1,9 +1,11 @@
 import tensorflow as tf
 from preprocessing_pipeline import load_datasets
+from sklearn.metrics import classification_report
+import numpy as np
 
 #params
 IMG_SIZE = (224, 224)
-BATCH_SIZE = 32
+BATCH_SIZE = 64
 SEED = 123
 NUM_CLASSES = 3
 EPOCHS = 25 # 10 -> 25: more epochs for initial training
@@ -25,8 +27,9 @@ base_model.trainable = False
 global_avg = tf.keras.layers.GlobalAveragePooling2D()(base_model.output)
 # prevent overfitting, drop 30% at random
 dropout = tf.keras.layers.Dropout(0.3)(global_avg)
-
-output = tf.keras.layers.Dense(NUM_CLASSES, activation='softmax')(dropout)
+# batch normalization
+batch_norm = tf.keras.layers.BatchNormalization()(dropout)
+output = tf.keras.layers.Dense(NUM_CLASSES, activation='softmax')(batch_norm)
 
 #connect models
 model = tf.keras.Model(inputs = base_model.input, outputs = output)
@@ -70,16 +73,23 @@ history = model.fit(
 test_loss, test_acc = model.evaluate(test_ds)
 print(f"test_loss: {test_loss:.4f}")
 
-#initial base modeL:
-# 10 epochs
-# test_loss: 1.0639
-# accuracy: 0.4877
+#base model classification report
 
-#new base model: more patience, epochs, higher LR
-# 10 epochs -> 25 epochs
-# LR reduction occurred on epoch #16
-# final learning rate: 2.5000e-04
-# test_loss: 0.8989
-# best val_loss: 0.9026
-# best val_accuracy: 0.6250
-# major improvement: 48.7% -> 62.5% validation accuracy (+13.8%)
+y_pred_probs = model.predict(test_ds)
+y_pred = np.argmax(y_pred_probs, axis=1)
+y_true = np.concatenate([y for x, y in test_ds], axis=0)
+
+print(classification_report(y_true, y_pred, target_names = ['BACTERIAL', 'NORMAL', 'VIRAL']))
+#               precision    recall  f1-score   support
+
+#    BACTERIAL       0.56      0.81      0.66       242
+#       NORMAL       0.68      0.78      0.72       234
+#        VIRAL       0.83      0.03      0.06       148
+
+#     accuracy                           0.61       624
+#    macro avg       0.69      0.54      0.48       624
+# weighted avg       0.67      0.61      0.54       624
+
+# over-predicting BACTERIAL
+# model is over-predicting bacterial and under-recognizing VIRAL
+# ~ 61% accuracy
