@@ -1,14 +1,13 @@
 # fine tuning model (best_model.h5) generated in train_model.py
 # unfreezing 20 layers, smaller learning_rate (1e-5), no ReduceLROnPlateau
 
-
 from preprocessing_pipeline import load_datasets
 import tensorflow as tf
 import os
 
 # num of base model layers to unfreeze 
-UNFREEZE_LAYERS = 10
-
+UNFREEZE_LAYERS = 15
+LEARNING_RATE = 1e-5
 EPOCHS = 10
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -30,19 +29,23 @@ for layer in model.layers[-UNFREEZE_LAYERS:]:
 
 # recompile model w/ lower learning rate
 model.compile(
-    optimizer = tf.keras.optimizers.Adam(learning_rate = 1e-5),
+    optimizer = tf.keras.optimizers.Adam(learning_rate = LEARNING_RATE),
     loss = "sparse_categorical_crossentropy",
-    metrics = ['accuracy']
+    metrics = ['val_loss'] 
 )
 # same callbacks minus ReduceLROnPlateau (already small learning rate)
 callbacks = [
     tf.keras.callbacks.EarlyStopping(
-        patience = 3,
+        patience = 5,
         restore_best_weights = True
     ),
     tf.keras.callbacks.ModelCheckpoint(
         "best_model_fine_tuned.h5",
         save_best_only = True
+    ),
+    tf.keras.callbacks.ReduceLROnPlateau(
+        factor = 0.2,
+        patience = 2
     )
 ]
 #retraining model
@@ -52,20 +55,7 @@ history = model.fit(
     epochs = EPOCHS,
     callbacks = callbacks
 )
+
 test_loss, test_acc = model.evaluate(test_ds)
 print(f"test_loss: {test_loss:.4f}")
-
-# Test 1
-# Unfreeze 20 layers.
-# ran for 4 epochs
-#   callbacks working
-# accuracy: 0.7565 
-# probably overfitting -> validation loss spike during epoch 2
-
-# Test 2
-# Unfreeze 10 layers instead of 20.
-# ran for ? epochs
-# accuracy: 0
-# test loss: 
-
-# Test 3
+print(f"test_accuracy: {test_acc:.4f}")

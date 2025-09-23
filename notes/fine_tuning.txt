@@ -1,0 +1,23 @@
+Test 1
+Unfroze 20 layers.
+ran for 4 epochs
+--> callbacks working
+accuracy: 0.7565 (way too good to be true)
+probably overfitting -> validation loss spike during epoch 2
+
+Test 2
+Unfroze 15 layers instead of 10.
+Increase Early Stopping patience (3 -> 5)
+Increase learning rate (1e-5 -> 2e-5) 
+ran for 4 epochs before I stopped it.
+  --> heavy val_loss spike --> overfitting 
+
+Test 3
+Unfroze 10 layers.
+Added ReduceLROnPlateau to callback.
+Ran for 5 epochs.
+val_accuracy stuck at 0.5
+
+Test 4
+Changed monitoring metric (accuracy -> val_loss).
+Ran for 5 epochs
