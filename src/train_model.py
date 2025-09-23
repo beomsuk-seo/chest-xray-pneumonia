@@ -76,4 +76,10 @@ print(f"test_loss: {test_loss:.4f}")
 # accuracy: 0.4877
 
 #new base model: more patience, epochs, higher LR
-# 25 epochs
+# 10 epochs -> 25 epochs
+# LR reduction occurred on epoch #16
+# final learning rate: 2.5000e-04
+# test_loss: 0.8989
+# best val_loss: 0.9026
+# best val_accuracy: 0.6250
+# major improvement: 48.7% -> 62.5% validation accuracy (+13.8%)
