@@ -1,14 +1,14 @@
 # fine tuning model (best_model.h5) generated in train_model.py
-# unfreezing 20 layers, smaller learning_rate (1e-5), no ReduceLROnPlateau
+# unfreezing 30 layers, smaller learning_rate (1e-5), no ReduceLROnPlateau
 
 from preprocessing_pipeline import load_datasets
 import tensorflow as tf
 import os
 
 # num of base model layers to unfreeze 
-UNFREEZE_LAYERS = 20
+UNFREEZE_LAYERS = 30
 LEARNING_RATE = 5e-6
-EPOCHS = 10
+EPOCHS = 15
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_DIR = os.path.join(SCRIPT_DIR, "..", "best_model.h5")
@@ -41,7 +41,8 @@ callbacks = [
     ),
     tf.keras.callbacks.ModelCheckpoint(
         "best_model_fine_tuned.h5",
-        save_best_only = True
+        save_best_only = True,
+        monitor = 'val_loss'
     )
 ]
 #retraining model
@@ -55,3 +56,10 @@ history = model.fit(
 test_loss, test_acc = model.evaluate(test_ds)
 print(f"test_loss: {test_loss:.4f}")
 print(f"test_accuracy: {test_acc:.4f}")
+
+# Epoch 13/15
+# 163/163 [==============================] - 286s 2s/step - loss: 0.4171 - accuracy: 0.8112 - val_loss: 2.1256 - val_accuracy: 0.4375
+# # Epoch 14/15
+# # 163/163 [==============================] - 284s 2s/step - loss: 0.4216 - accuracy: 0.8081 - val_loss: 1.5729 - val_accuracy: 0.7500
+# # Epoch 15/15
+# # 163/163 [==============================] - 299s 2s/step - loss: 0.4300 - accuracy: 0.8004 - val_loss: 2.0547 - val_accuracy: 0.5625
