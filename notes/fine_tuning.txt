@@ -25,3 +25,7 @@ LEARNING_RATE = 1e-5
 Test 5
 Unfroze 50 layers.
 note: starting with higher initial loss
+
+Test 6
+UNFREEZE_LAYERS = 20
+LEARNING_RATE = 5e-6

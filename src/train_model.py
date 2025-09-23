@@ -6,8 +6,8 @@ IMG_SIZE = (224, 224)
 BATCH_SIZE = 32
 SEED = 123
 NUM_CLASSES = 3
-EPOCHS = 10
-LEARNING_RATE = 1e-4
+EPOCHS = 25 # 10 -> 25: more epochs for initial training
+LEARNING_RATE = 1e-3 #1e-4 -> 1e-3: higher LR for initial training
 
 # load preprocessed datasets (see preprocesing_pipeline.py)
 train_ds, test_ds, val_ds = load_datasets()
@@ -45,7 +45,8 @@ model.compile(
 # callbacks
 callbacks = [
     tf.keras.callbacks.EarlyStopping(
-        patience = 3,
+        monitor = 'val_loss',
+        patience = 8, # 3 -> 8
         restore_best_weights = True
     ),
     tf.keras.callbacks.ModelCheckpoint(
@@ -53,8 +54,8 @@ callbacks = [
         save_best_only = True
     ),
     tf.keras.callbacks.ReduceLROnPlateau(
-        factor = 0.2,
-        patience = 2
+        factor = 0.5, # 0.2 -> 0.5, less aggressive reduction
+        patience = 4
     )
 ]
 
@@ -69,6 +70,10 @@ history = model.fit(
 test_loss, test_acc = model.evaluate(test_ds)
 print(f"test_loss: {test_loss:.4f}")
 
+#initial base modeL:
 # 10 epochs
 # test_loss: 1.0639
 # accuracy: 0.4877
+
+#new base model: more patience, epochs, higher LR
+# 25 epochs

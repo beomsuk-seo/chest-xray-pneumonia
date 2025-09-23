@@ -6,8 +6,8 @@ import tensorflow as tf
 import os
 
 # num of base model layers to unfreeze 
-UNFREEZE_LAYERS = 50
-LEARNING_RATE = 1e-5
+UNFREEZE_LAYERS = 20
+LEARNING_RATE = 5e-6
 EPOCHS = 10
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -33,21 +33,15 @@ model.compile(
     loss = "sparse_categorical_crossentropy",
     metrics = ['accuracy'] 
 )
-# same callbacks minus ReduceLROnPlateau (already small learning rate)
 callbacks = [
     tf.keras.callbacks.EarlyStopping(
         monitor = 'val_loss',
-        patience = 5,
+        patience = 8,
         restore_best_weights = True
     ),
     tf.keras.callbacks.ModelCheckpoint(
         "best_model_fine_tuned.h5",
         save_best_only = True
-    ),
-    tf.keras.callbacks.ReduceLROnPlateau(
-        monitor = 'val_loss',
-        factor = 0.2,
-        patience = 2
     )
 ]
 #retraining model
