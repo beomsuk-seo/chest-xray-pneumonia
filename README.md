@@ -1,29 +1,31 @@
 # Deep Learning for Pneumonia Diagnosis from Chest X-Rays
 
+A deep learning project in TensorFlow/Keras that classifies chest X-ray images into three categories: **Normal**, **Viral Pneumonia**, and **Bacterial Pneumonia** using transfer learning with ResNet50.
+
 ### Project Overview
 
-This project uses deep learning with TensorFlow/Keras to classify chest X-ray images into three categories: NORMAL, VIRAL PNEUMONIA, and BACTERIAL PNEUMONIA. The model is based on ResNet50 and employs transfer learning and fine-tuning to improve performance on a medical imaging dataset.
+This project implements a convolutional neural network to automatically diagnose pneumonia from chest X-ray images, distinguishing between viral and bacterial infections. The model uses transfer learning with ResNet50 as the base architecture, fine-tuned medical image classification.
 
-### Dataset Organization
-- Original dataset contains all pneumonia imaging in a single folder.
-- `src/split_pneumonia.py` splits them into `BACTERIAL/` and `VIRAL/` directores for three-class classification.
+## 🎯 Key Features
 
-Initial Data Heirarchy
-```
-data/raw/
-├── train/
-│   ├── NORMAL/       # Training images, healthy lungs
-│   └── PNEUMONIA/    # Training images, pneumonia
-├── val/
-│   ├── NORMAL/       # Validation set images, healthy lungs
-│   └── PNEUMONIA/    # Validation set images, pneumonia
-└── test/
-    ├── NORMAL/        # Test set images, healthy lungs
-    └── PNEUMONIA/    # Test set images, pneumonia
-```
-Processed Data Heirarchy
-```
-data/
+- **Multi-class Classification**: Distinguishes between Normal, Viral Pneumonia, and Bacterial Pneumonia
+- **Transfer Learning**: Leverages pre-trained ResNet50 for efficient training
+- **Progressive Fine-tuning**: Two-stage training approach for optimal performance
+- **Data Augmentation**: Robust preprocessing pipeline with medical image considerations
+- **Performance Monitoring**: Comprehensive callbacks for training optimization
+- **Progressive Unfreezing**: Unfreezing last 20 layers of ResNet50 for fine-tuning
 
+## 📁 Project Structure
 WIP
-```
+## 🚀 Getting Started
+WIP
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Contact
+
+Feel free to reach out for questions or collaborations:
+- GitHub: beomsuk-seo
+- Email: beomsukbrendanseo@gmail.com
+- LinkedIn: https://www.linkedin.com/in/beomsukseo/
