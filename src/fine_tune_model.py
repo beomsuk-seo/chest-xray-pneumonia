@@ -6,7 +6,7 @@ import tensorflow as tf
 import os
 
 # num of base model layers to unfreeze 
-UNFREEZE_LAYERS = 15
+UNFREEZE_LAYERS = 50
 LEARNING_RATE = 1e-5
 EPOCHS = 10
 
@@ -31,11 +31,12 @@ for layer in model.layers[-UNFREEZE_LAYERS:]:
 model.compile(
     optimizer = tf.keras.optimizers.Adam(learning_rate = LEARNING_RATE),
     loss = "sparse_categorical_crossentropy",
-    metrics = ['val_loss'] 
+    metrics = ['accuracy'] 
 )
 # same callbacks minus ReduceLROnPlateau (already small learning rate)
 callbacks = [
     tf.keras.callbacks.EarlyStopping(
+        monitor = 'val_loss',
         patience = 5,
         restore_best_weights = True
     ),
@@ -44,6 +45,7 @@ callbacks = [
         save_best_only = True
     ),
     tf.keras.callbacks.ReduceLROnPlateau(
+        monitor = 'val_loss',
         factor = 0.2,
         patience = 2
     )

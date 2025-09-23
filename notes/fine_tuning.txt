@@ -19,5 +19,9 @@ Ran for 5 epochs.
 val_accuracy stuck at 0.5
 
 Test 4
-Changed monitoring metric (accuracy -> val_loss).
-Ran for 5 epochs
+Monitoring callbacks (ReduceLROnPlateau and Early Stopping) with val_loss.
+LEARNING_RATE = 1e-5
+
+Test 5
+Unfroze 50 layers.
+note: starting with higher initial loss
